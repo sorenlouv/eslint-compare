@@ -52,11 +52,11 @@ const Rule = ({name, description, configs}) => {
 
 const FixedHeader = ({title, configs, enableConfig, disableConfig}) => {
 	const enabledConfigs = configs.filter(config => config.enabled).map(config => {
-		return <td key={config.name} onClick={disableConfig.bind(this, config.name)} className="rule"><img src={config.icon} height="30"/></td>;
+		return <td key={config.name} onClick={disableConfig.bind(this, config.name)} className="rule"><img title={config.name} src={config.icon} height="30"/></td>;
 	});
 
 	const disabledConfigs = configs.filter(config => !config.enabled).map(config => {
-		return <div key={config.name}><img onClick={enableConfig.bind(this, config.name)} src={config.icon} height="30"/></div>;
+		return <div key={config.name} onClick={enableConfig.bind(this, config.name)}><img title={config.name} src={config.icon} height="30"/></div>;
 	});
 
 	return (
@@ -140,7 +140,6 @@ export default class App extends Component {
 	}
 
 	render () {
-		console.log(this.state.configs.map(config => config.enabled));
 		const categoryNodes = rulesCategories.map((category, i) => {
 			return <Category key={i}
 				title={category.title}
