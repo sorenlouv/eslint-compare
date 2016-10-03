@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Modal from 'react-modal';
 import rulesCategories from './data/rules.json';
 import _ from 'lodash';
 import { StickyContainer, Sticky } from 'react-sticky';
@@ -50,13 +51,23 @@ const Rule = ({name, description, configs}) => {
 	);
 };
 
-const FixedHeader = ({title, configs, enableConfig, disableConfig}) => {
+const FixedHeader = ({title, configs, enableConfig, disableConfig, showEditor}) => {
+	const editLink = <a onClick={showEditor} className="edit">Edit</a>;
 	const enabledConfigs = configs.filter(config => config.enabled).map(config => {
-		return <td key={config.name} onClick={disableConfig.bind(this, config.name)} className="rule"><img title={config.name} src={config.icon} height="30"/></td>;
+		return (
+			<td key={config.name} className="rule">
+				<img onClick={disableConfig.bind(this, config.name)} title={config.name} src={config.icon} height="30"/>
+				{config.name === 'custom' ? editLink : null}
+			</td>
+		);
 	});
 
 	const disabledConfigs = configs.filter(config => !config.enabled).map(config => {
-		return <div key={config.name} onClick={enableConfig.bind(this, config.name)}><img title={config.name} src={config.icon} height="30"/></div>;
+		return (
+			<div key={config.name} onClick={enableConfig.bind(this, config.name)}>
+				<img title={config.name} src={config.icon} height="30"/>
+			</div>
+		);
 	});
 
 	return (
@@ -76,11 +87,11 @@ const FixedHeader = ({title, configs, enableConfig, disableConfig}) => {
 	);
 };
 
-const Category = ({title, rules, configs, enableConfig, disableConfig}) => {
+const Category = ({title, rules, configs, enableConfig, disableConfig, showEditor}) => {
 	const ruleNodes = rules.map((rule, i) => <Rule key={i} name={rule.name} description={rule.description} configs={configs}></Rule>);
 	return (
 		<div>
-			<FixedHeader title={title} configs={configs} enableConfig={enableConfig} disableConfig={disableConfig}></FixedHeader>
+			<FixedHeader title={title} configs={configs} enableConfig={enableConfig} disableConfig={disableConfig} showEditor={showEditor}></FixedHeader>
 			<table>
 				<tbody>{ruleNodes}</tbody>
 			</table>
@@ -94,20 +105,14 @@ export default class App extends Component {
 		super(props);
 		const configs = [
 			{
+				name: 'airbnb',
+				icon: require('./img/airbnb-icon.png'),
+				rules: require('./data/configs/airbnb-base.json')
+			},
+			{
 				name: 'eslint-recommended',
 				icon: require('./img/eslint-recommended-icon.png'),
 				rules: require('./data/configs/eslint-recommended.json'),
-				enabled: true
-			},
-			{
-				name: 'airbnb',
-				icon: require('./img/airbnb-icon.png'),
-				rules: require('./data/configs/airbnb.json')
-			},
-			{
-				name: 'standard',
-				icon: require('./img/standard-icon.png'),
-				rules: require('./data/configs/standard.json'),
 				enabled: true
 			},
 			{
@@ -116,14 +121,27 @@ export default class App extends Component {
 				rules: require('./data/configs/google.json')
 			},
 			{
-				name: 'tradeshift',
-				icon: require('./img/tradeshift-icon.png'),
-				rules: require('./data/configs/tradeshift.json')
+				name: 'standard',
+				icon: require('./img/standard-icon.png'),
+				rules: require('./data/configs/standard.json')
+			},
+			{
+				name: 'custom',
+				icon: require('./img/edit-icon.png'),
+				rules: {},
+				enabled: true
 			}
+			// {
+			// 	name: 'tradeshift',
+			// 	icon: require('./img/tradeshift-icon.png'),
+			// 	rules: require('./data/configs/tradeshift.json')
+			// }
 		];
 
 		this.state = {
-			configs: configs
+			configs: configs,
+			editorContents: '',
+			isEditorVisible: false
 		};
 	}
 
@@ -139,6 +157,38 @@ export default class App extends Component {
 		this.setState({configs: this.state.configs});
 	}
 
+	onClickSave () {
+		try {
+			const customConfig = _.find(this.state.configs, {name: 'custom'});
+			customConfig.rules = JSON.parse(this.state.editorContents);
+
+			this.setState({
+				configs: this.state.configs,
+				isEditorVisible: false
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	onChangeEditor (evt) {
+		this.setState({
+			editorContents: evt.target.value
+		});
+	}
+
+	showEditor () {
+		this.setState({
+			isEditorVisible: true
+		});
+	}
+
+	hideEditor () {
+		this.setState({
+			isEditorVisible: false
+		});
+	}
+
 	render () {
 		const categoryNodes = rulesCategories.map((category, i) => {
 			return <Category key={i}
@@ -146,14 +196,25 @@ export default class App extends Component {
 				rules={category.rules}
 				configs={this.state.configs}
 				enableConfig={this.enableConfig.bind(this)}
-				disableConfig={this.disableConfig.bind(this)}>
+				disableConfig={this.disableConfig.bind(this)}
+				showEditor={this.showEditor.bind(this)}>
 			</Category>;
 		});
 
 		return (
-			<StickyContainer>
-				{categoryNodes}
-			</StickyContainer>
+			<div>
+				<Modal
+					isOpen={this.state.isEditorVisible}
+					onRequestClose={this.hideEditor.bind(this)}>
+					<div className="modal-inner">
+						<textarea onChange={this.onChangeEditor.bind(this)} placeholder="Paste ESLint rules and hit Save" value={this.state.editorContents}/>
+						<button onClick={this.onClickSave.bind(this)}>Save</button>
+					</div>
+				</Modal>
+				<StickyContainer>
+					{categoryNodes}
+				</StickyContainer>
+			</div>
 		);
 	}
 }
