@@ -2,101 +2,13 @@ import React, {Component} from 'react';
 import Modal from 'react-modal';
 import rulesCategories from './data/rules.json';
 import _ from 'lodash';
-import { StickyContainer, Sticky } from 'react-sticky';
+import { StickyContainer } from 'react-sticky';
+import Category from './modules/Category.jsx';
 
-const getRuleCode = (rule) => {
-	const ruleValue = _.isArray(rule)
-		? _.first(rule)
-		: rule;
-
-	if (_.isNumber(ruleValue)) {
-		return ruleValue;
+const modalStyles = {
+	overlay: {
+		backgroundColor: 'rgba(0, 0, 0, 0.75)'
 	}
-
-	switch (ruleValue) {
-		case 'off':
-			return 0;
-		case 'warning':
-			return 1;
-		case 'error':
-			return 2;
-	};
-};
-
-const getRuleLabel = (ruleCode) => {
-	switch (ruleCode) {
-		case 0:
-			return 'off';
-		case 1:
-			return 'warn';
-		case 2:
-			return 'error';
-	};
-};
-
-const Rule = ({name, description, configs}) => {
-	const ruleNodes = configs.filter(config => config.enabled).map(config => {
-		const ruleCode = getRuleCode(config.rules[name]);
-		return <td key={config.name} className={'rule code-' + ruleCode}>{getRuleLabel(ruleCode)}</td>;
-	});
-
-	return (
-		<tr>
-			{ruleNodes}
-			<td>
-				<a href={'http://eslint.org/docs/rules/' + name}>{name}</a>
-			</td>
-			<td>{description}</td>
-		</tr>
-	);
-};
-
-const FixedHeader = ({title, configs, enableConfig, disableConfig, showEditor}) => {
-	const editLink = <a onClick={showEditor} className="edit">Edit</a>;
-	const enabledConfigs = configs.filter(config => config.enabled).map(config => {
-		return (
-			<td key={config.name} className="rule">
-				<img onClick={disableConfig.bind(this, config.name)} title={config.name} src={config.icon} height="30"/>
-				{config.name === 'custom' ? editLink : null}
-			</td>
-		);
-	});
-
-	const disabledConfigs = configs.filter(config => !config.enabled).map(config => {
-		return (
-			<div key={config.name} onClick={enableConfig.bind(this, config.name)}>
-				<img title={config.name} src={config.icon} height="30"/>
-			</div>
-		);
-	});
-
-	return (
-		<Sticky className="header">
-			<table>
-				<thead>
-					<tr>
-						{enabledConfigs}
-						<td><h2>{title}</h2></td>
-						<td className="disabled-configs">
-							{disabledConfigs}
-						</td>
-					</tr>
-				</thead>
-			</table>
-		</Sticky>
-	);
-};
-
-const Category = ({title, rules, configs, enableConfig, disableConfig, showEditor}) => {
-	const ruleNodes = rules.map((rule, i) => <Rule key={i} name={rule.name} description={rule.description} configs={configs}></Rule>);
-	return (
-		<div>
-			<FixedHeader title={title} configs={configs} enableConfig={enableConfig} disableConfig={disableConfig} showEditor={showEditor}></FixedHeader>
-			<table>
-				<tbody>{ruleNodes}</tbody>
-			</table>
-		</div>
-	);
 };
 
 export default class App extends Component {
@@ -107,7 +19,8 @@ export default class App extends Component {
 			{
 				name: 'airbnb',
 				icon: require('./img/airbnb-icon.png'),
-				rules: require('./data/configs/airbnb-base.json')
+				rules: require('./data/configs/airbnb-base.json'),
+				enabled: true
 			},
 			{
 				name: 'eslint-recommended',
@@ -118,18 +31,20 @@ export default class App extends Component {
 			{
 				name: 'google',
 				icon: require('./img/google-icon.png'),
-				rules: require('./data/configs/google.json')
+				rules: require('./data/configs/google.json'),
+				enabled: false
 			},
 			{
 				name: 'standard',
 				icon: require('./img/standard-icon.png'),
-				rules: require('./data/configs/standard.json')
+				rules: require('./data/configs/standard.json'),
+				enabled: true
 			},
 			{
 				name: 'custom',
-				icon: require('./img/edit-icon.png'),
+				icon: require('./img/add-icon.png'),
 				rules: {},
-				enabled: true
+				enabled: false
 			}
 			// {
 			// 	name: 'tradeshift',
@@ -141,7 +56,8 @@ export default class App extends Component {
 		this.state = {
 			configs: configs,
 			editorContents: '',
-			isEditorVisible: false
+			isEditorVisible: false,
+			isEditorInvalid: false
 		};
 	}
 
@@ -164,10 +80,14 @@ export default class App extends Component {
 
 			this.setState({
 				configs: this.state.configs,
-				isEditorVisible: false
+				isEditorVisible: false,
+				isEditorInvalid: false
 			});
 		} catch (e) {
 			console.error(e);
+			this.setState({
+				isEditorInvalid: true
+			});
 		}
 	}
 
@@ -197,18 +117,30 @@ export default class App extends Component {
 				configs={this.state.configs}
 				enableConfig={this.enableConfig.bind(this)}
 				disableConfig={this.disableConfig.bind(this)}
-				showEditor={this.showEditor.bind(this)}>
-			</Category>;
+				showEditor={this.showEditor.bind(this)} />;
 		});
 
 		return (
 			<div>
 				<Modal
+					className='modal-outer'
+					style={modalStyles}
 					isOpen={this.state.isEditorVisible}
 					onRequestClose={this.hideEditor.bind(this)}>
-					<div className="modal-inner">
-						<textarea onChange={this.onChangeEditor.bind(this)} placeholder="Paste ESLint rules and hit Save" value={this.state.editorContents}/>
-						<button onClick={this.onClickSave.bind(this)}>Save</button>
+					<div className='modal-inner'>
+						<div className='header'>
+							<p>
+								If you are extending other configs, you can use the following to generate the resulting config:
+								<code>eslint --print-config ./</code>
+							</p>
+						</div>
+						<textarea onChange={this.onChangeEditor.bind(this)} placeholder='Paste ESLint rules and hit Save' value={this.state.editorContents} />
+						<div className='footer'>
+							<button onClick={this.onClickSave.bind(this)}>Save</button>
+							{
+								this.state.isEditorInvalid ? <span className='editor-invalid'>The config is invalid and cannot be saved</span> : null
+							}
+						</div>
 					</div>
 				</Modal>
 				<StickyContainer>
