@@ -31,10 +31,32 @@ function getRuleLabel (ruleCode) {
 	};
 }
 
+function formatRule (rule) {
+	if (!_.isObject(rule)) {
+		return rule;
+	}
+
+	return JSON.stringify(rule, null, 4);
+}
+
+function getTitleText (rule) {
+	if (_.isArray(rule)) {
+		const rules = rule.slice(1);
+		if (rules.length === 1) {
+			return formatRule(rules[0]);
+		} else {
+			return formatRule(rules);
+		}
+	}
+}
+
 const Rule = ({name, description, configs}) => {
 	const ruleNodes = configs.filter(config => config.enabled).map(config => {
+		const titleText = getTitleText(config.rules[name]);
 		const ruleCode = getRuleCode(config.rules[name]);
-		return <td key={config.name} className={'rule code-' + ruleCode}>{getRuleLabel(ruleCode)}</td>;
+		return <td data-tip={titleText} key={config.name} className={'rule code-' + ruleCode}>
+			{getRuleLabel(ruleCode)}{titleText ? '*' : null}
+		</td>;
 	});
 
 	return (

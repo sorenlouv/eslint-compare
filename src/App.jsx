@@ -4,6 +4,7 @@ import rulesCategories from './data/rules.json';
 import _ from 'lodash';
 import { StickyContainer } from 'react-sticky';
 import Category from './modules/Category.jsx';
+import ReactTooltip from 'react-tooltip';
 
 const modalStyles = {
 	overlay: {
@@ -46,11 +47,6 @@ export default class App extends Component {
 				rules: {},
 				enabled: false
 			}
-			// {
-			// 	name: 'tradeshift',
-			// 	icon: require('./img/tradeshift-icon.png'),
-			// 	rules: require('./data/configs/tradeshift.json')
-			// }
 		];
 
 		this.state = {
@@ -122,6 +118,7 @@ export default class App extends Component {
 
 		return (
 			<div>
+				<ReactTooltip multiline={true} />
 				<Modal
 					className='modal-outer'
 					style={modalStyles}
