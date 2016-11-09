@@ -57,6 +57,10 @@ export default class App extends Component {
 		};
 	}
 
+	componentDidUpdate () {
+		ReactTooltip.rebuild();
+	}
+
 	enableConfig (name) {
 		const config = _.find(this.state.configs, {name: name});
 		config.enabled = true;
@@ -72,7 +76,8 @@ export default class App extends Component {
 	onClickSave () {
 		try {
 			const customConfig = _.find(this.state.configs, {name: 'custom'});
-			customConfig.rules = JSON.parse(this.state.editorContents);
+			const contents = JSON.parse(this.state.editorContents);
+			customConfig.rules = _.get(contents, 'rules', contents);
 
 			this.setState({
 				configs: this.state.configs,
@@ -106,6 +111,7 @@ export default class App extends Component {
 	}
 
 	render () {
+
 		const categoryNodes = rulesCategories.map((category, i) => {
 			return <Category key={i}
 				title={category.title}
@@ -118,7 +124,7 @@ export default class App extends Component {
 
 		return (
 			<div>
-				<ReactTooltip multiline={true} />
+				<ReactTooltip multiline />
 				<Modal
 					className='modal-outer'
 					style={modalStyles}
@@ -128,7 +134,7 @@ export default class App extends Component {
 						<div className='header'>
 							<p>
 								If you are extending other configs, you can use the following to generate the resulting config:
-								<code>eslint --print-config ./</code>
+								<code>node_modules/eslint/bin/eslint.js --print-config ./</code>
 							</p>
 						</div>
 						<textarea onChange={this.onChangeEditor.bind(this)} placeholder='Paste ESLint rules and hit Save' value={this.state.editorContents} />

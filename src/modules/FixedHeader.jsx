@@ -7,7 +7,7 @@ const FixedHeader = ({title, configs, enableConfig, disableConfig, showEditor}) 
 		return (
 			<td key={config.name} className='rule'>
 				<div className='icon-container'>
-					<img onClick={disableConfig.bind(this, config.name)} title={config.name} src={config.icon} height='30' />
+					<img data-tip={config.name} onClick={disableConfig.bind(this, config.name)} src={config.icon} height='30' />
 					{config.name === 'custom' ? editLink : null}
 				</div>
 			</td>
@@ -24,7 +24,7 @@ const FixedHeader = ({title, configs, enableConfig, disableConfig, showEditor}) 
 	const disabledConfigs = configs.filter(config => !config.enabled).map(config => {
 		return (
 			<div key={config.name} onClick={enableAndEditConfig.bind(this, config.name)}>
-				<img title={config.name} src={config.icon} height='30' />
+				<img data-tip={config.name} src={config.icon} height='30' />
 			</div>
 		);
 	});
