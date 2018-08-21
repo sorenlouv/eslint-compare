@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -49,7 +47,7 @@ module.exports = {
     // Errors should be considered fatal in development
     require.resolve('react-error-overlay'),
     // Finally, this is your app's code:
-    paths.appIndexJs,
+    paths.appIndexJs
     // We include the app code last so that if there is a runtime error during
     // initialization, it doesn't blow up the WebpackDevServer client, and
     // changing JS code would still trigger a refresh.
@@ -66,10 +64,10 @@ module.exports = {
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
     // This is the URL that app is served from. We use "/" in development.
-    publicPath: publicPath,
+    publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
+      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -88,10 +86,9 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
+      'react-native': 'react-native-web'
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -99,8 +96,8 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc),
-    ],
+      new ModuleScopePlugin(paths.appSrc)
+    ]
   },
   module: {
     strictExportPresence: true,
@@ -117,13 +114,12 @@ module.exports = {
         use: [
           {
             options: {
-              formatter: eslintFormatter,
-              
+              formatter: eslintFormatter
             },
-            loader: require.resolve('eslint-loader'),
-          },
+            loader: require.resolve('eslint-loader')
+          }
         ],
-        include: paths.appSrc,
+        include: paths.appSrc
       },
       // ** ADDING/UPDATING LOADERS **
       // The "file" loader handles all assets unless explicitly excluded.
@@ -143,12 +139,12 @@ module.exports = {
           /\.bmp$/,
           /\.gif$/,
           /\.jpe?g$/,
-          /\.png$/,
+          /\.png$/
         ],
         loader: require.resolve('file-loader'),
         options: {
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       },
       // "url" loader works like "file" loader except that it embeds assets
       // smaller than specified limit in bytes as data URLs to avoid requests.
@@ -158,8 +154,8 @@ module.exports = {
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       },
       // Process JS with Babel.
       {
@@ -167,12 +163,11 @@ module.exports = {
         include: paths.appSrc,
         loader: require.resolve('babel-loader'),
         options: {
-          
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/babel-loader/
           // directory for faster rebuilds.
-          cacheDirectory: true,
-        },
+          cacheDirectory: true
+        }
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -186,8 +181,8 @@ module.exports = {
           {
             loader: require.resolve('css-loader'),
             options: {
-              importLoaders: 1,
-            },
+              importLoaders: 1
+            }
           },
           {
             loader: require.resolve('postcss-loader'),
@@ -202,18 +197,18 @@ module.exports = {
                     '>1%',
                     'last 4 versions',
                     'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
+                    'not ie < 9' // React doesn't support IE8 anyway
                   ],
-                  flexbox: 'no-2009',
-                }),
-              ],
-            },
-          },
-        ],
-      },
+                  flexbox: 'no-2009'
+                })
+              ]
+            }
+          }
+        ]
+      }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "file" loader exclusion list.
-    ],
+    ]
   },
   plugins: [
     // Makes some environment variables available in index.html.
@@ -224,7 +219,7 @@ module.exports = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: paths.appHtml,
+      template: paths.appHtml
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
@@ -247,7 +242,7 @@ module.exports = {
     // solution that requires the user to opt into importing specific locales.
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
@@ -255,12 +250,12 @@ module.exports = {
     dgram: 'empty',
     fs: 'empty',
     net: 'empty',
-    tls: 'empty',
+    tls: 'empty'
   },
   // Turn off performance hints during development because we don't do any
   // splitting or minification in interest of speed. These warnings become
   // cumbersome.
   performance: {
-    hints: false,
-  },
+    hints: false
+  }
 };

@@ -11,7 +11,7 @@ function getRuleCode(rule) {
   switch (ruleValue) {
     case 'off':
       return 0;
-    case 'warning':
+    case 'warn':
       return 1;
     case 'error':
       return 2;

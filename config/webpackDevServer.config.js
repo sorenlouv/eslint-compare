@@ -1,5 +1,3 @@
-'use strict';
-
 const errorOverlayMiddleware = require('react-error-overlay/middleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const config = require('./webpack.config.dev');
@@ -65,16 +63,16 @@ module.exports = function(proxy, allowedHost) {
     // Reportedly, this avoids CPU overload on some systems.
     // https://github.com/facebookincubator/create-react-app/issues/293
     watchOptions: {
-      ignored: /node_modules/,
+      ignored: /node_modules/
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === 'https',
-    host: host,
+    host,
     overlay: false,
     historyApiFallback: {
       // Paths with dots should still use the history fallback.
       // See https://github.com/facebookincubator/create-react-app/issues/387.
-      disableDotRule: true,
+      disableDotRule: true
     },
     public: allowedHost,
     proxy,
@@ -87,6 +85,6 @@ module.exports = function(proxy, allowedHost) {
       // it used the same host and port.
       // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
       app.use(noopServiceWorkerMiddleware());
-    },
+    }
   };
 };
