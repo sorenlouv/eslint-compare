@@ -1,4 +1,5 @@
 {
+    "rules" : {
     "no-cond-assign": 0,
     "no-irregular-whitespace": 2,
     "no-unexpected-multiline": 2,
@@ -113,4 +114,4 @@
     "yield-star-spacing": [
         2, "after"
     ]
-}
+}}

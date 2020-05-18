@@ -6,9 +6,10 @@
     "jasmine": true,
     "jest": true
   },
-  "extends": ["airbnb", "prettier", "prettier/react"],
+  /*"extends": ["airbnb", "prettier", "prettier/react"],*/
   "plugins": ["prettier"],
   "rules": {
+    /*
     "prettier/prettier": [
       "error",
       {
@@ -29,7 +30,7 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-
+*/
     "no-debugger": ["off"],
     "default-case": ["off"],
     "global-require": ["off"],

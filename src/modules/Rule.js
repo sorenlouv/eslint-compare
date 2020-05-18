@@ -48,32 +48,30 @@ function getTitleText(rule) {
 }
 
 const Rule = ({ name, description, configs }) => {
-  const ruleNodes = configs.filter(config => config.enabled).map(config => {
-    const titleText = getTitleText(config.rules[name]);
-    const ruleCode = getRuleCode(config.rules[name]);
-    return (
-      <td
-        data-tip={titleText}
-        key={config.name}
-        className={`rule code-${ruleCode}`}
-      >
-        {getRuleLabel(ruleCode)}
-        {titleText ? '*' : null}
-      </td>
-    );
-  });
+  const ruleNodes = configs
+    .filter(config => config.enabled)
+    .map(config => {
+      const titleText = getTitleText(config.rules[name]);
+      const ruleCode = getRuleCode(config.rules[name]);
+      return (
+        <td
+          data-tip={titleText}
+          key={config.name}
+          className={`rule code-${ruleCode}`}
+        >
+          {getRuleLabel(ruleCode)}
+          {titleText ? '*' : null}
+        </td>
+      );
+    });
 
   return (
     <tr>
       {ruleNodes}
       <td>
-        <a href={`http://eslint.org/docs/rules/${name}`}>
-          {name}
-        </a>
+        <a href={`http://eslint.org/docs/rules/${name}`}>{name}</a>
       </td>
-      <td>
-        {description}
-      </td>
+      <td>{description}</td>
     </tr>
   );
 };

@@ -7,13 +7,13 @@ import Category from './modules/Category';
 import ReactTooltip from 'react-tooltip';
 
 const allRules = _.flatten(
-  rulesCategories.map(cat => cat.rules.map(rule => rule.name))
+  rulesCategories.map((cat) => cat.rules.map((rule) => rule.name))
 );
 
 const modalStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.75)'
-  }
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+  },
 };
 
 export default class App extends Component {
@@ -23,51 +23,79 @@ export default class App extends Component {
       {
         name: 'airbnb',
         icon: require('./img/airbnb-icon.png'),
-        rules: require('./data/configs/airbnb-base.json'),
-        enabled: true
+        path: 'airbnb-base.json',
+        enabled: true,
+        config: {},
       },
       {
         name: 'eslint-recommended',
         icon: require('./img/eslint-recommended-icon.png'),
-        rules: require('./data/configs/eslint-recommended.json'),
-        enabled: true
+        path: 'eslint-recommended.json',
+        enabled: true,
+        config: {},
       },
       {
         name: 'google',
         icon: require('./img/google-icon.png'),
-        rules: require('./data/configs/google.json'),
-        enabled: false
+        path: 'google.json',
+        enabled: false,
+        config: {},
       },
       {
         name: 'standard',
         icon: require('./img/standard-icon.png'),
-        rules: require('./data/configs/standard.json'),
-        enabled: true
+        path: 'standard.json',
+        enabled: true,
+        config: {},
+      },
+      {
+        name: 'nucleus-ts',
+        icon: require('./img/cvent.png'),
+        path: 'nucleus-ts.json',
+        enabled: true,
+        config: {},
       },
       {
         name: 'custom',
         icon: require('./img/add-icon.png'),
         rules: {},
-        enabled: false
-      }
+        enabled: false,
+        config: {},
+      },
     ];
 
+    let newRulesCategories = [...rulesCategories];
+    configs.forEach((config) => {
+      if (config.path) {
+        let data = require(`./data/configs/${config.path}`);
+        config.rules = data.rules;
+        delete data.rules;
+        config.config = data;
+      }
+
+      const customCategories = this.updateRulesFromConfig(config);
+      if (customCategories && customCategories.length) {
+        newRulesCategories = [...newRulesCategories, ...customCategories];
+      }
+    });
     this.state = {
       configs,
       editorContents: '',
       isEditorVisible: false,
       isEditorInvalid: false,
-      rulesCategories
+      rulesCategories: newRulesCategories,
     };
+
+    //throw new Error(JSON.stringify(this.state.rulesCategories));
   }
 
   componentDidUpdate() {
     ReactTooltip.rebuild();
   }
 
-  onChangeEditor = evt => {
+  onChangeEditor = (evt) => {
     this.setState({
-      editorContents: evt.target.value
+      editorContents: evt.target.value,
     });
   };
 
@@ -77,55 +105,66 @@ export default class App extends Component {
       const contents = JSON.parse(this.state.editorContents);
       customConfig.rules = _.get(contents, 'rules', contents);
 
-      const customRuleNames = Object.keys(customConfig.rules).filter(
-        rule => !allRules.includes(rule)
-      );
-
-      const customRuleNamesWithCategory = customRuleNames.filter(name =>
-        name.includes('/')
-      );
-
-      const customCategories = customRuleNamesWithCategory.reduce(
-        (memo, ruleName) => {
-          const categoryTitle = ruleName.split('/')[0];
-          const category = memo.find(
-            categories => categories.title === categoryTitle
-          );
-          if (!category) {
-            memo.push({
-              title: categoryTitle,
-              rules: [{ name: ruleName }]
-            });
-            return memo;
-          }
-
-          category.rules.push({ name: ruleName });
-          return memo;
-        },
-        []
-      );
+      const customRuleCategories = this.updateRulesFromConfig(customConfig);
 
       this.setState({
-        rulesCategories: [...this.state.rulesCategories, ...customCategories],
         configs: this.state.configs,
         isEditorVisible: false,
-        isEditorInvalid: false
+        isEditorInvalid: false,
+        rulesCategories: [
+          ...this.state.rulesCategories,
+          ...customRuleCategories,
+        ],
       });
     } catch (e) {
       console.error(e);
       this.setState({
-        isEditorInvalid: true
+        isEditorInvalid: true,
       });
     }
   };
 
-  enableConfig = name => {
+  updateRulesFromConfig = (eslintConfig) => {
+    console.log(eslintConfig.name);
+
+    const customRuleNames = Object.keys(eslintConfig.rules).filter(
+      (rule) => !allRules.includes(rule)
+    );
+
+    const customRuleNamesWithCategory = customRuleNames.filter((name) =>
+      name.includes('/')
+    );
+
+    const customCategories = customRuleNamesWithCategory.reduce(
+      (memo, ruleName) => {
+        const categoryTitle = ruleName.split('/')[0];
+        const category = memo.find(
+          (categories) => categories.title === categoryTitle
+        );
+        if (!category) {
+          memo.push({
+            title: categoryTitle,
+            rules: [{ name: ruleName }],
+          });
+          return memo;
+        }
+
+        category.rules.push({ name: ruleName });
+        return memo;
+      },
+      []
+    );
+
+    return customCategories;
+  };
+
+  enableConfig = (name) => {
     const config = _.find(this.state.configs, { name });
     config.enabled = true;
     this.setState({ configs: this.state.configs });
   };
 
-  disableConfig = name => {
+  disableConfig = (name) => {
     const config = _.find(this.state.configs, { name });
     config.enabled = false;
     this.setState({ configs: this.state.configs });
@@ -133,18 +172,18 @@ export default class App extends Component {
 
   showEditor = () => {
     this.setState({
-      isEditorVisible: true
+      isEditorVisible: true,
     });
   };
 
   hideEditor = () => {
     this.setState({
-      isEditorVisible: false
+      isEditorVisible: false,
     });
   };
 
   render() {
-    const categoryNodes = this.state.rulesCategories.map(category => {
+    const categoryNodes = this.state.rulesCategories.map((category) => {
       return (
         <Category
           key={category.title}
@@ -182,17 +221,15 @@ export default class App extends Component {
             />
             <div className="footer">
               <button onClick={this.onClickSave}>Save</button>
-              {this.state.isEditorInvalid
-                ? <span className="editor-invalid">
-                    The config is invalid and cannot be saved
-                  </span>
-                : null}
+              {this.state.isEditorInvalid ? (
+                <span className="editor-invalid">
+                  The config is invalid and cannot be saved
+                </span>
+              ) : null}
             </div>
           </div>
         </Modal>
-        <StickyContainer>
-          {categoryNodes}
-        </StickyContainer>
+        <StickyContainer>{categoryNodes}</StickyContainer>
       </div>
     );
   }

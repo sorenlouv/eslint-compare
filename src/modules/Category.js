@@ -10,14 +10,14 @@ const Category = ({
   disableConfig,
   showEditor
 }) => {
-  const ruleNodes = rules.map(rule =>
+  const ruleNodes = rules.map(rule => (
     <Rule
       key={rule.name}
       name={rule.name}
       description={rule.description}
       configs={configs}
     />
-  );
+  ));
   return (
     <div>
       <FixedHeader
@@ -28,9 +28,7 @@ const Category = ({
         showEditor={showEditor}
       />
       <table>
-        <tbody>
-          {ruleNodes}
-        </tbody>
+        <tbody>{ruleNodes}</tbody>
       </table>
     </div>
   );

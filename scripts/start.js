@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable import/no-dynamic-require */
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -24,7 +23,7 @@ const {
   choosePort,
   createCompiler,
   prepareProxy,
-  prepareUrls,
+  prepareUrls
 } = require('react-dev-utils/WebpackDevServerUtils');
 const openBrowser = require('react-dev-utils/openBrowser');
 const paths = require('../config/paths');
@@ -77,8 +76,8 @@ choosePort(HOST, DEFAULT_PORT)
       openBrowser(urls.localUrlForBrowser);
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
-      process.on(sig, function() {
+    ['SIGINT', 'SIGTERM'].forEach(sig => {
+      process.on(sig, () => {
         devServer.close();
         process.exit();
       });

@@ -1,4 +1,5 @@
 {
+  "rules": {
     "no-alert": "off",
     "no-array-constructor": "off",
     "no-bitwise": "off",
@@ -233,4 +234,5 @@
     "no-template-curly-in-string": "off",
     "yield-star-spacing": "off",
     "yoda": "off"
+  }
 }

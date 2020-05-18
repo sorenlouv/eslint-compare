@@ -1,4 +1,5 @@
 {
+  "rules": {
     "accessor-pairs": 0,
     "block-scoped-var": 0,
     "complexity": [0, 11],
@@ -6,9 +7,12 @@
     "curly": [0, "all"],
     "default-case": 0,
     "dot-location": 0,
-    "dot-notation": [0, {
+    "dot-notation": [
+      0,
+      {
         "allowKeywords": true
-    }],
+      }
+    ],
     "eqeqeq": 0,
     "guard-for-in": 0,
     "no-alert": 0,
@@ -53,10 +57,13 @@
     "no-useless-call": 0,
     "no-useless-concat": 0,
     "no-void": 0,
-    "no-warning-comments": [0, {
+    "no-warning-comments": [
+      0,
+      {
         "terms": ["todo", "fixme", "xxx"],
         "location": "start"
-    }],
+      }
+    ],
     "no-with": 0,
     "radix": 0,
     "vars-on-top": 0,
@@ -133,10 +140,13 @@
     "id-match": 0,
     "indent": 0,
     "jsx-quotes": 0,
-    "key-spacing": [0, {
+    "key-spacing": [
+      0,
+      {
         "beforeColon": false,
         "afterColon": true
-    }],
+      }
+    ],
     "linebreak-style": [0, "unix"],
     "lines-around-comment": 0,
     "max-depth": [0, 4],
@@ -153,9 +163,12 @@
     "no-inline-comments": 0,
     "no-lonely-if": 0,
     "no-mixed-spaces-and-tabs": [2, false],
-    "no-multiple-empty-lines": [0, {
+    "no-multiple-empty-lines": [
+      0,
+      {
         "max": 2
-    }],
+      }
+    ],
     "no-negated-condition": 0,
     "no-nested-ternary": 0,
     "no-new-object": 0,
@@ -174,10 +187,13 @@
     "quote-props": 0,
     "quotes": [0, "double"],
     "require-jsdoc": 0,
-    "semi-spacing": [2, {
+    "semi-spacing": [
+      2,
+      {
         "before": false,
         "after": true
-    }],
+      }
+    ],
     "semi": 0,
     "sort-vars": 0,
     "space-after-keywords": [0, "always"],
@@ -187,10 +203,13 @@
     "space-in-parens": [0, "never"],
     "space-infix-ops": 0,
     "space-return-throw-case": 0,
-    "space-unary-ops": [0, {
+    "space-unary-ops": [
+      0,
+      {
         "words": true,
         "nonwords": false
-    }],
+      }
+    ],
     "spaced-comment": 0,
     "wrap-regex": 0,
     "init-declarations": 0,
@@ -202,9 +221,13 @@
     "no-undef-init": 0,
     "no-undef": 2,
     "no-undefined": 0,
-    "no-unused-vars": [2, {
+    "no-unused-vars": [
+      2,
+      {
         "vars": "all",
         "args": "after-used"
-    }],
+      }
+    ],
     "no-use-before-define": 0
+  }
 }

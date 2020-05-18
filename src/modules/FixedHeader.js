@@ -55,13 +55,9 @@ const FixedHeader = ({
           <tr>
             {enabledConfigs}
             <td>
-              <h2>
-                {title}
-              </h2>
+              <h2>{title}</h2>
             </td>
-            <td className="disabled-configs">
-              {disabledConfigs}
-            </td>
+            <td className="disabled-configs">{disabledConfigs}</td>
           </tr>
         </thead>
       </table>
