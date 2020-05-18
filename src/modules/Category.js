@@ -8,9 +8,9 @@ const Category = ({
   configs,
   enableConfig,
   disableConfig,
-  showEditor
+  showEditor,
 }) => {
-  const ruleNodes = rules.map(rule => (
+  const ruleNodes = rules.map((rule) => (
     <Rule
       key={rule.name}
       name={rule.name}
