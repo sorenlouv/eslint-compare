@@ -5,15 +5,16 @@ import _ from 'lodash';
 import { StickyContainer } from 'react-sticky';
 import Category from './modules/Category';
 import ReactTooltip from 'react-tooltip';
+import ConfigBlock from './modules/ConfigBlock';
 
 const allRules = _.flatten(
-  rulesCategories.map(cat => cat.rules.map(rule => rule.name))
+  rulesCategories.map((cat) => cat.rules.map((rule) => rule.name))
 );
 
 const modalStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.75)'
-  }
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+  },
 };
 
 export default class App extends Component {
@@ -25,61 +26,61 @@ export default class App extends Component {
         icon: require('./img/airbnb-icon.png'),
         path: 'airbnb-base.json',
         enabled: true,
-        config: {}
+        config: {},
       },
       {
         name: 'airbnb-ts-prettier',
         icon: require('./img/airbnb-icon.png'),
         path: 'airbnb-typescript-prettier.json',
         enabled: true,
-        config: {}
+        config: {},
       },
       {
         name: 'eslint-recommended',
         icon: require('./img/eslint-recommended-icon.png'),
         path: 'eslint-recommended.json',
         enabled: false,
-        config: {}
+        config: {},
       },
       {
         name: 'google',
         icon: require('./img/google-icon.png'),
         path: 'google.json',
         enabled: false,
-        config: {}
+        config: {},
       },
       {
         name: 'standard',
         icon: require('./img/standard-icon.png'),
         path: 'standard.json',
         enabled: false,
-        config: {}
+        config: {},
       },
       {
         name: 'nucleus-ts',
         icon: require('./img/cvent.png'),
         path: 'nucleus-ts.json',
         enabled: true,
-        config: {}
+        config: {},
       },
       {
         name: 'kcd',
         icon: require('./img/kcd.png'),
         path: 'kcd.json',
         enabled: true,
-        config: {}
+        config: {},
       },
       {
         name: 'custom',
         icon: require('./img/add-icon.png'),
         rules: {},
         enabled: false,
-        config: {}
-      }
+        config: {},
+      },
     ];
 
     let newRulesCategories = [...rulesCategories];
-    configs.forEach(config => {
+    configs.forEach((config) => {
       if (config.path) {
         let data = require(`./data/configs/${config.path}`);
         config.rules = data.rules;
@@ -97,7 +98,7 @@ export default class App extends Component {
       editorContents: '',
       isEditorVisible: false,
       isEditorInvalid: false,
-      rulesCategories: newRulesCategories
+      rulesCategories: newRulesCategories,
     };
 
     //throw new Error(JSON.stringify(this.state.rulesCategories));
@@ -107,9 +108,9 @@ export default class App extends Component {
     ReactTooltip.rebuild();
   }
 
-  onChangeEditor = evt => {
+  onChangeEditor = (evt) => {
     this.setState({
-      editorContents: evt.target.value
+      editorContents: evt.target.value,
     });
   };
 
@@ -127,25 +128,25 @@ export default class App extends Component {
         isEditorInvalid: false,
         rulesCategories: [
           ...this.state.rulesCategories,
-          ...customRuleCategories
-        ]
+          ...customRuleCategories,
+        ],
       });
     } catch (e) {
       console.error(e);
       this.setState({
-        isEditorInvalid: true
+        isEditorInvalid: true,
       });
     }
   };
 
-  updateRulesFromConfig = eslintConfig => {
+  updateRulesFromConfig = (eslintConfig) => {
     console.log(eslintConfig.name);
 
     const customRuleNames = Object.keys(eslintConfig.rules).filter(
-      rule => !allRules.includes(rule)
+      (rule) => !allRules.includes(rule)
     );
 
-    const customRuleNamesWithCategory = customRuleNames.filter(name =>
+    const customRuleNamesWithCategory = customRuleNames.filter((name) =>
       name.includes('/')
     );
 
@@ -153,12 +154,12 @@ export default class App extends Component {
       (memo, ruleName) => {
         const categoryTitle = ruleName.split('/')[0];
         const category = memo.find(
-          categories => categories.title === categoryTitle
+          (categories) => categories.title === categoryTitle
         );
         if (!category) {
           memo.push({
             title: categoryTitle,
-            rules: [{ name: ruleName }]
+            rules: [{ name: ruleName }],
           });
           return memo;
         }
@@ -172,13 +173,13 @@ export default class App extends Component {
     return customCategories;
   };
 
-  enableConfig = name => {
+  enableConfig = (name) => {
     const config = _.find(this.state.configs, { name });
     config.enabled = true;
     this.setState({ configs: this.state.configs });
   };
 
-  disableConfig = name => {
+  disableConfig = (name) => {
     const config = _.find(this.state.configs, { name });
     config.enabled = false;
     this.setState({ configs: this.state.configs });
@@ -186,18 +187,18 @@ export default class App extends Component {
 
   showEditor = () => {
     this.setState({
-      isEditorVisible: true
+      isEditorVisible: true,
     });
   };
 
   hideEditor = () => {
     this.setState({
-      isEditorVisible: false
+      isEditorVisible: false,
     });
   };
 
   render() {
-    const categoryNodes = this.state.rulesCategories.map(category => {
+    const categoryNodes = this.state.rulesCategories.map((category) => {
       return (
         <Category
           key={category.title}
@@ -244,6 +245,12 @@ export default class App extends Component {
           </div>
         </Modal>
         <StickyContainer>{categoryNodes}</StickyContainer>
+        <div>
+          <h2>Configs</h2>
+          <div>
+            <ConfigBlock configs={this.state.configs} />
+          </div>
+        </div>
       </div>
     );
   }
