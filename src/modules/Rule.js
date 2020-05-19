@@ -12,6 +12,7 @@ function getRuleCode(rule) {
     case 'off':
       return 0;
     case 'warning':
+    case 'warn':
       return 1;
     case 'error':
       return 2;
@@ -53,8 +54,8 @@ function getTitleText(rule) {
 
 const Rule = ({ name, description, configs }) => {
   const ruleNodes = configs
-    .filter(config => config.enabled)
-    .map(config => {
+    .filter((config) => config.enabled)
+    .map((config) => {
       const titleText = getTitleText(config.rules[name]);
       const ruleCode = getRuleCode(config.rules[name]);
       return (
