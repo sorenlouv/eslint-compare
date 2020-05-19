@@ -1,4 +1,32 @@
 {
+  "name": "nucleus/typescript",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "globals": {},
+  "parser": "/Users/acsontos/code/test/test-compare-eslint/node_modules/@typescript-eslint/parser/dist/parser.js",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "generators": false,
+      "objectLiteralDuplicateProperties": false
+    }
+  },
+  "plugins": [
+    "jsx-a11y",
+    "jest",
+    "import",
+    "react-hooks",
+    "flowtype",
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
   "rules": {
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
@@ -970,5 +998,30 @@
     "no-with": ["error"],
     "radix": ["error"],
     "yoda": ["error"]
-  }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".internal.js",
+          ".js",
+          ".native.js",
+          ".web.js",
+          ".android.js",
+          ".ios.js",
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "babel-module": {}
+    },
+    "react": {
+      "pragma": "React",
+      "version": "0.14"
+    },
+    "import/extensions": [".js", ".jsx"],
+    "import/core-modules": [],
+    "import/ignore": ["node_modules", "\\.(coffee|scss|css|less|hbs|svg|json)$"]
+  },
+  "ignorePatterns": []
 }
