@@ -6,7 +6,7 @@ const FixedHeader = ({
   configs,
   enableConfig,
   disableConfig,
-  showEditor,
+  showEditor
 }) => {
   const editLink = (
     <a onClick={showEditor} className="edit">
@@ -14,8 +14,8 @@ const FixedHeader = ({
     </a>
   );
   const enabledConfigs = configs
-    .filter((config) => config.enabled)
-    .map((config) => {
+    .filter(config => config.enabled)
+    .map(config => {
       return (
         <td key={config.name} className="rule">
           <div className="icon-container">
@@ -39,8 +39,8 @@ const FixedHeader = ({
   }
 
   const disabledConfigs = configs
-    .filter((config) => !config.enabled)
-    .map((config) => {
+    .filter(config => !config.enabled)
+    .map(config => {
       return (
         <div key={config.name} onClick={() => enableAndEditConfig(config.name)}>
           <img data-tip={config.name} src={config.icon} height="30" />

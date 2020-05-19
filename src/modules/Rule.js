@@ -1,5 +1,5 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 
 function getRuleCode(rule) {
   const ruleValue = _.isArray(rule) ? _.first(rule) : rule;
@@ -9,11 +9,11 @@ function getRuleCode(rule) {
   }
 
   switch (ruleValue) {
-    case "off":
+    case 'off':
       return 0;
-    case "warning":
+    case 'warning':
       return 1;
-    case "error":
+    case 'error':
       return 2;
   }
 }
@@ -21,13 +21,15 @@ function getRuleCode(rule) {
 function getRuleLabel(ruleCode) {
   switch (ruleCode) {
     case 0:
-      return "off";
+      return 'off';
     case 1:
-      return "warn";
+      return 'warn';
     case 2:
-      return "error";
+      return 'error';
+    case undefined:
+      return null;
     default:
-      throw new Error(`Unknown ruleCode`);
+      throw new Error(`Unknown ruleCode ${ruleCode}`);
   }
 }
 
@@ -51,8 +53,8 @@ function getTitleText(rule) {
 
 const Rule = ({ name, description, configs }) => {
   const ruleNodes = configs
-    .filter((config) => config.enabled)
-    .map((config) => {
+    .filter(config => config.enabled)
+    .map(config => {
       const titleText = getTitleText(config.rules[name]);
       const ruleCode = getRuleCode(config.rules[name]);
       return (
@@ -62,7 +64,7 @@ const Rule = ({ name, description, configs }) => {
           className={`rule code-${ruleCode}`}
         >
           {getRuleLabel(ruleCode)}
-          {titleText ? "*" : null}
+          {titleText ? '*' : null}
         </td>
       );
     });
