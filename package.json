@@ -1,6 +1,6 @@
 {
   "name": "eslint-compare",
-  "homepage": "https://sqren.github.io/eslint-compare/",
+  "homepage": "https://socialtables.github.io/eslint-compare/",
   "version": "0.5.0",
   "dependencies": {
     "autoprefixer": "7.1.1",
