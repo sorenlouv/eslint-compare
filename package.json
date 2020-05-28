@@ -20,7 +20,6 @@
     "file-loader": "0.11.2",
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
-    "kcd-scripts": "^6.2.0",
     "lodash": "^4.17.15",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
@@ -43,7 +42,8 @@
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
-    "gh-pages": "^1.2.0"
+    "gh-pages": "^1.2.0",
+    "kcd-scripts": "^6.2.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
