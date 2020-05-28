@@ -1,7 +1,3 @@
 {
-  "editor.formatOnSave": true,
-  "prettier": {
-    "singleQuote": true,
-    "semi": true
-  }
+  "editor.formatOnSave": true
 }

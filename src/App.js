@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import Modal from 'react-modal';
-import rulesCategories from './data/rules.json';
-import _ from 'lodash';
-import { StickyContainer } from 'react-sticky';
-import Category from './modules/Category';
-import ReactTooltip from 'react-tooltip';
-import ConfigBlock from './modules/ConfigBlock';
+import React, {Component} from 'react'
+import Modal from 'react-modal'
+import _ from 'lodash'
+import {StickyContainer} from 'react-sticky'
+import ReactTooltip from 'react-tooltip'
+import Category from './modules/Category'
+import rulesCategories from './data/rules'
+import ConfigBlock from './modules/ConfigBlock'
 
 const allRules = _.flatten(
-  rulesCategories.map((cat) => cat.rules.map((rule) => rule.name))
-);
+  rulesCategories.map(cat => cat.rules.map(rule => rule.name)),
+)
 
 const modalStyles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
-};
+}
 
 export default class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     const configs = [
       {
         name: 'airbnb',
@@ -77,50 +77,50 @@ export default class App extends Component {
         enabled: false,
         config: {},
       },
-    ];
+    ]
 
-    let newRulesCategories = [...rulesCategories];
-    configs.forEach((config) => {
+    let newRulesCategories = [...rulesCategories]
+    configs.forEach(config => {
       if (config.path) {
-        let data = require(`./data/configs/${config.path}`);
-        config.rules = data.rules;
-        delete data.rules;
-        config.config = data;
+        const data = require(`./data/configs/${config.path}`)
+        config.rules = data.rules
+        delete data.rules
+        config.config = data
       }
 
-      const customCategories = this.updateRulesFromConfig(config);
+      const customCategories = this.updateRulesFromConfig(config)
       if (customCategories && customCategories.length) {
-        newRulesCategories = [...newRulesCategories, ...customCategories];
+        newRulesCategories = [...newRulesCategories, ...customCategories]
       }
-    });
+    })
     this.state = {
       configs,
       editorContents: '',
       isEditorVisible: false,
       isEditorInvalid: false,
       rulesCategories: newRulesCategories,
-    };
+    }
 
     //throw new Error(JSON.stringify(this.state.rulesCategories));
   }
 
   componentDidUpdate() {
-    ReactTooltip.rebuild();
+    ReactTooltip.rebuild()
   }
 
-  onChangeEditor = (evt) => {
+  onChangeEditor = evt => {
     this.setState({
       editorContents: evt.target.value,
-    });
-  };
+    })
+  }
 
   onClickSave = () => {
     try {
-      const customConfig = _.find(this.state.configs, { name: 'custom' });
-      const contents = JSON.parse(this.state.editorContents);
-      customConfig.rules = _.get(contents, 'rules', contents);
+      const customConfig = _.find(this.state.configs, {name: 'custom'})
+      const contents = JSON.parse(this.state.editorContents)
+      customConfig.rules = _.get(contents, 'rules', contents)
 
-      const customRuleCategories = this.updateRulesFromConfig(customConfig);
+      const customRuleCategories = this.updateRulesFromConfig(customConfig)
 
       this.setState({
         configs: this.state.configs,
@@ -130,75 +130,75 @@ export default class App extends Component {
           ...this.state.rulesCategories,
           ...customRuleCategories,
         ],
-      });
+      })
     } catch (e) {
-      console.error(e);
+      console.error(e)
       this.setState({
         isEditorInvalid: true,
-      });
+      })
     }
-  };
+  }
 
-  updateRulesFromConfig = (eslintConfig) => {
-    console.log(eslintConfig.name);
+  updateRulesFromConfig = eslintConfig => {
+    console.log(eslintConfig.name)
 
     const customRuleNames = Object.keys(eslintConfig.rules).filter(
-      (rule) => !allRules.includes(rule)
-    );
+      rule => !allRules.includes(rule),
+    )
 
-    const customRuleNamesWithCategory = customRuleNames.filter((name) =>
-      name.includes('/')
-    );
+    const customRuleNamesWithCategory = customRuleNames.filter(name =>
+      name.includes('/'),
+    )
 
     const customCategories = customRuleNamesWithCategory.reduce(
       (memo, ruleName) => {
-        const categoryTitle = ruleName.split('/')[0];
+        const categoryTitle = ruleName.split('/')[0]
         const category = memo.find(
-          (categories) => categories.title === categoryTitle
-        );
+          categories => categories.title === categoryTitle,
+        )
         if (!category) {
           memo.push({
             title: categoryTitle,
-            rules: [{ name: ruleName }],
-          });
-          return memo;
+            rules: [{name: ruleName}],
+          })
+          return memo
         }
 
-        category.rules.push({ name: ruleName });
-        return memo;
+        category.rules.push({name: ruleName})
+        return memo
       },
-      []
-    );
+      [],
+    )
 
-    return customCategories;
-  };
+    return customCategories
+  }
 
-  enableConfig = (name) => {
-    const config = _.find(this.state.configs, { name });
-    config.enabled = true;
-    this.setState({ configs: this.state.configs });
-  };
+  enableConfig = name => {
+    const config = _.find(this.state.configs, {name})
+    config.enabled = true
+    this.setState({configs: this.state.configs})
+  }
 
-  disableConfig = (name) => {
-    const config = _.find(this.state.configs, { name });
-    config.enabled = false;
-    this.setState({ configs: this.state.configs });
-  };
+  disableConfig = name => {
+    const config = _.find(this.state.configs, {name})
+    config.enabled = false
+    this.setState({configs: this.state.configs})
+  }
 
   showEditor = () => {
     this.setState({
       isEditorVisible: true,
-    });
-  };
+    })
+  }
 
   hideEditor = () => {
     this.setState({
       isEditorVisible: false,
-    });
-  };
+    })
+  }
 
   render() {
-    const categoryNodes = this.state.rulesCategories.map((category) => {
+    const categoryNodes = this.state.rulesCategories.map(category => {
       return (
         <Category
           key={category.title}
@@ -209,8 +209,8 @@ export default class App extends Component {
           disableConfig={this.disableConfig}
           showEditor={this.showEditor}
         />
-      );
-    });
+      )
+    })
 
     return (
       <div>
@@ -252,6 +252,6 @@ export default class App extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

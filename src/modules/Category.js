@@ -1,6 +1,6 @@
-import React from 'react';
-import Rule from './Rule';
-import FixedHeader from './FixedHeader';
+import React from 'react'
+import Rule from './Rule'
+import FixedHeader from './FixedHeader'
 
 const Category = ({
   title,
@@ -8,7 +8,7 @@ const Category = ({
   configs,
   enableConfig,
   disableConfig,
-  showEditor
+  showEditor,
 }) => {
   const ruleNodes = rules.map(rule => (
     <Rule
@@ -17,7 +17,7 @@ const Category = ({
       description={rule.description}
       configs={configs}
     />
-  ));
+  ))
   return (
     <div>
       <FixedHeader
@@ -31,7 +31,7 @@ const Category = ({
         <tbody>{ruleNodes}</tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default Category;
+export default Category

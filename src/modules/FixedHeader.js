@@ -1,18 +1,18 @@
-import React from 'react';
-import { Sticky } from 'react-sticky';
+import React from 'react'
+import {Sticky} from 'react-sticky'
 
 const FixedHeader = ({
   title,
   configs,
   enableConfig,
   disableConfig,
-  showEditor
+  showEditor,
 }) => {
   const editLink = (
     <a onClick={showEditor} className="edit">
       Edit
     </a>
-  );
+  )
   const enabledConfigs = configs
     .filter(config => config.enabled)
     .map(config => {
@@ -28,13 +28,13 @@ const FixedHeader = ({
             {config.name === 'custom' ? editLink : null}
           </div>
         </td>
-      );
-    });
+      )
+    })
 
   function enableAndEditConfig(name) {
-    enableConfig.call(this, name);
+    enableConfig.call(this, name)
     if (name === 'custom') {
-      showEditor();
+      showEditor()
     }
   }
 
@@ -45,8 +45,8 @@ const FixedHeader = ({
         <div key={config.name} onClick={() => enableAndEditConfig(config.name)}>
           <img data-tip={config.name} src={config.icon} height="30" />
         </div>
-      );
-    });
+      )
+    })
 
   return (
     <Sticky className="header">
@@ -62,7 +62,7 @@ const FixedHeader = ({
         </thead>
       </table>
     </Sticky>
-  );
-};
+  )
+}
 
-export default FixedHeader;
+export default FixedHeader

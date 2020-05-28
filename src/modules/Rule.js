@@ -1,63 +1,64 @@
-import React from 'react';
-import _ from 'lodash';
+import React from 'react'
+import _ from 'lodash'
 
 function getRuleCode(rule) {
-  const ruleValue = _.isArray(rule) ? _.first(rule) : rule;
+  const ruleValue = _.isArray(rule) ? _.first(rule) : rule
 
   if (_.isNumber(ruleValue)) {
-    return ruleValue;
+    return ruleValue
   }
 
   switch (ruleValue) {
     case 'off':
-      return 0;
+      return 0
     case 'warning':
     case 'warn':
-      return 1;
+      return 1
     case 'error':
-      return 2;
+      return 2
+    default:
+      return null
   }
 }
 
 function getRuleLabel(ruleCode) {
   switch (ruleCode) {
     case 0:
-      return 'off';
+      return 'off'
     case 1:
-      return 'warn';
+      return 'warn'
     case 2:
-      return 'error';
-    case undefined:
-      return null;
+      return 'error'
     default:
-      throw new Error(`Unknown ruleCode ${ruleCode}`);
+      return null
   }
 }
 
 function formatRule(rule) {
   if (!_.isObject(rule)) {
-    return rule;
+    return rule
   }
 
-  return JSON.stringify(rule, null, 4);
+  return JSON.stringify(rule, null, 4)
 }
 
 function getTitleText(rule) {
   if (_.isArray(rule)) {
-    const rules = rule.slice(1);
+    const rules = rule.slice(1)
     if (rules.length === 1) {
-      return formatRule(rules[0]);
+      return formatRule(rules[0])
     }
-    return formatRule(rules);
+    return formatRule(rules)
   }
+  return null
 }
 
-const Rule = ({ name, description, configs }) => {
+const Rule = ({name, description, configs}) => {
   const ruleNodes = configs
-    .filter((config) => config.enabled)
-    .map((config) => {
-      const titleText = getTitleText(config.rules[name]);
-      const ruleCode = getRuleCode(config.rules[name]);
+    .filter(config => config.enabled)
+    .map(config => {
+      const titleText = getTitleText(config.rules[name])
+      const ruleCode = getRuleCode(config.rules[name])
       return (
         <td
           data-tip={titleText}
@@ -67,8 +68,8 @@ const Rule = ({ name, description, configs }) => {
           {getRuleLabel(ruleCode)}
           {titleText ? '*' : null}
         </td>
-      );
-    });
+      )
+    })
 
   return (
     <tr>
@@ -78,7 +79,7 @@ const Rule = ({ name, description, configs }) => {
       </td>
       <td>{description}</td>
     </tr>
-  );
-};
+  )
+}
 
-export default Rule;
+export default Rule
