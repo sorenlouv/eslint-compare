@@ -30,7 +30,7 @@ export default class App extends Component {
       },
       {
         name: 'airbnb-ts-prettier',
-        icon: require('./img/airbnb-icon.png'),
+        icon: require('./img/airbnb-icon-ts.png'),
         path: 'airbnb-typescript-prettier.json',
         enabled: true,
         config: {},
