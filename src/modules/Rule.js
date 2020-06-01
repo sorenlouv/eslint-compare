@@ -21,6 +21,43 @@ function getRuleCode(rule) {
   }
 }
 
+function getUrl(fullName) {
+  let prefix = ''
+  let name = fullName
+  let url = ''
+
+  const arr = fullName.split('/')
+
+  if (arr.length > 1) {
+    prefix = arr[0]
+    name = arr[1]
+  }
+
+  switch (prefix) {
+    case 'babel':
+      url = `https://github.com/babel/eslint-plugin-babel/tree/master/rules/${name}.js`
+      break
+    case 'react':
+      url = `https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/${name}.md`
+      break
+    case 'import':
+      url = `https://github.com/benmosher/eslint-plugin-import/tree/master/docs/rules/${name}.md`
+      break
+    case 'jsx-a11y':
+      url = `https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/${name}.md`
+      break
+    case '@typescript-eslint':
+      url = `https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/${name}.md`
+      break
+    case 'jest':
+      url = `https://github.com/jest-community/eslint-plugin-jest/tree/master/docs/rules/${name}.md`
+      break
+    default:
+      url = `http://eslint.org/docs/rules/${name}`
+  }
+
+  return url
+}
 function getRuleLabel(ruleCode) {
   switch (ruleCode) {
     case 0:
@@ -75,7 +112,7 @@ const Rule = ({name, description, configs}) => {
     <tr>
       {ruleNodes}
       <td>
-        <a href={`http://eslint.org/docs/rules/${name}`}>{name}</a>
+        <a href={getUrl(name)}>{name}</a>
       </td>
       <td>{description}</td>
     </tr>
