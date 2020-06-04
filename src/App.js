@@ -57,6 +57,13 @@ export default class App extends Component {
         config: {},
       },
       {
+        name: 'nucleus-js',
+        icon: require('./img/cvent.png'),
+        path: 'nucleus-js.json',
+        enabled: true,
+        config: {},
+      },
+      {
         name: 'nucleus-ts',
         icon: require('./img/cvent.png'),
         path: 'nucleus-ts.json',
@@ -67,6 +74,13 @@ export default class App extends Component {
         name: 'kcd',
         icon: require('./img/kcd.png'),
         path: 'kcd.json',
+        enabled: true,
+        config: {},
+      },
+      {
+        name: 'kcd-ts',
+        icon: require('./img/kcd.png'),
+        path: 'kcd-ts.json',
         enabled: true,
         config: {},
       },
