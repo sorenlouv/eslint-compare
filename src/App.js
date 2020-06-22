@@ -140,6 +140,8 @@ export default class App extends Component {
       const customConfig = _.find(this.state.configs, {name: 'custom'})
       const contents = JSON.parse(this.state.editorContents)
       customConfig.rules = _.get(contents, 'rules', contents)
+      delete contents.rules
+      customConfig.config = _.get(contents, 'config', contents)
 
       const customRuleCategories = this.updateRulesFromConfig(customConfig)
 
