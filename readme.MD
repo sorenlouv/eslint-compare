@@ -1,7 +1,21 @@
-Getting Started
-----------
 
-To add new configs:
+
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
+
+#Getting Started
+----------
+This shows different ESLint configs. 
+
+
+##To add new configs:
 1. Export config using:
 ```
 npx eslint --print-config src > yourconfig.json
@@ -10,7 +24,7 @@ npx eslint --print-config src > yourconfig.json
 3. Add a picture to ./src/img
 4. Add a your new config section to the list of configs in ./src/App.js
 
-Develop
+##Develop
 ```
 npm install
 npm run start

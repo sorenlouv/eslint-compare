@@ -130,7 +130,7 @@ export default class App extends Component {
   }
 
   onChangeEditor = evt => {
-    this.setState({
+          this.setState({
       editorContents: evt.target.value,
     })
   }
