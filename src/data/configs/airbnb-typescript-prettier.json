@@ -6,7 +6,7 @@
     "node": true
   },
   "globals": {},
-  "parser": "/Users/acsontos/code/test/test-eslint-airbnb-typescript-prettier/node_modules/@typescript-eslint/parser/dist/parser.js",
+  "parser": "node_modules/@typescript-eslint/parser/dist/parser.js",
   "parserOptions": {
     "sourceType": "module",
     "project": "./tsconfig.json",

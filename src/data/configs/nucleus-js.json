@@ -6,7 +6,7 @@
     "jest/globals": true
   },
   "globals": {},
-  "parser": "/Users/acsontos/code/test/test-nucleus/node_modules/babel-eslint/lib/index.js",
+  "parser": "node_modules/babel-eslint/lib/index.js",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
